@@ -6,13 +6,15 @@ _THERE ARE SEVERAL CLARIFICATIONS THAT I WOULD LIKE TO MENTION_
 
 In order to run the file 'connectz.py', at first, you have to install the package listed int the file 'requirements.txt'.
 
-Then, please make sure that you have your data file within the folder before running the file 'connectz.py'.
+Then, please make sure that you have your data file within the directory folder or you have to type the input path where you store the data (for example: "home/data.txt") before running the file 'connectz.py'.
+
+Please refer to 'ConnectZ.pdf' for output example for each case.
 
 'connects.py' was written under Python3.7.
 
 2. EXPLAINATION
 
-This logic behind this solution was:
+The basic logic behind this solution was:
 
 - 1. Create a virtual playing board as a X by Y zero matrix.
 
