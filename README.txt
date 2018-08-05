@@ -1,7 +1,5 @@
 *** This submission is for Yobota's challenge ***
 
-Hi,
-
 _THERE ARE SEVERAL CLARIFICATIONS THAT I WOULD LIKE TO MENTION_
 
 1. HOW TO RUN
@@ -24,7 +22,3 @@ This logic behind this solution was:
 
 - 4. If found, STOP and return the result.
 	Else GO TO 2
-
-You have a nice day.
- 
-
