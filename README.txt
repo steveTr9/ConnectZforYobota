@@ -1,6 +1,6 @@
 *** This submission is for Yobota's challenge ***
 
-_THERE ARE SEVERAL CLARIFICATIONS THAT I WOULD LIKE TO MENTION_
+_There are several clarifications that I would like to mention_
 
 1. HOW TO RUN
 
