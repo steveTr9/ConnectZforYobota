@@ -6,7 +6,7 @@ _THERE ARE SEVERAL CLARIFICATIONS THAT I WOULD LIKE TO MENTION_
 
 After downloading the repository, in order to run the file 'connectz.py', at first, you have to install the package listed in the file 'requirements.txt'.
 
-Then, please make sure that you have your data file within the directory folder before running the file 'connectz.py' or you have to type the input path where you store the data (for example: "home/data.txt") when the programme asks for it
+Then, please make sure that you have your data file within the directory folder before running the file 'connectz.py' or you have to type the input path where you store the data (for example: "home/data.txt") when the programme asks for it.
 
 Please refer to 'ConnectZ.pdf' for output example for each case.
 
