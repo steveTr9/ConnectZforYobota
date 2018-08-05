@@ -64,6 +64,9 @@ def check_win_v(count, board, last_move_player, last_move_col, last_move_row, Wi
 
 def check_win_nwse(count, board, last_move_player, last_move_col, last_move_row, Win):
     # Check win North West to South East
+    # The logic behind:
+    # the function scans all 'win' by 'win' matrices that containing the last_move in their diagonals
+    # then, compare the diagonals to the player number in order to deduce the results
     if count+1 >= 2*Win:
         for k in range(Win):
             if ((last_move_row - (Win-(k+1))) >= 0 and (last_move_row + k+1) <= board.shape[0]
@@ -72,13 +75,13 @@ def check_win_nwse(count, board, last_move_player, last_move_col, last_move_row,
                                    last_move_col - (Win-(k+1)):last_move_col + k+1])
                 if (all(targeted_matrix_nwse.diagonal() == last_move_player)):
                     return last_move_player
-    # check_win_nwse's logic:
-    # the function scans all 'win' by 'win' matrices that containing the last_move in their diagonals
-    # then, compare the diagonals to the player number in order to deduce the results
 
 
 def check_win_swne(count, board, last_move_player, last_move_col, last_move_row, Win):
     # Check win South West to North East
+    # The logic behind:
+    # the function scans all 'win' by 'win' matrices that containing the last_move in their 'flipped' diagonals
+    # then, compare the 'flipped' diagonals to the player number in order to deduce the results
     if count+1 >= 2*Win:
         for k in range(Win):
             if ((last_move_row - (Win - (k + 1))) >= 0 and (last_move_row + k + 1) <= board.shape[0]
@@ -87,9 +90,6 @@ def check_win_swne(count, board, last_move_player, last_move_col, last_move_row,
                                                  last_move_col - (k): last_move_col + (Win - (k))])
                 if  (all(targeted_matrix_swne.diagonal() == last_move_player)):
                     return last_move_player
-    # check_win_swne's logic:
-    # the function scans all 'win' by 'win' matrices that containing the last_move in their 'flipped' diagonals
-    # then, compare the 'flipped' diagonals to the player number in order to deduce the results
 
 
 def check_win(count, board, last_move_player, last_move_col, last_move_row, Win):
