@@ -1,7 +1,3 @@
-import numpy as np
-import sys
-
-
 def check_slot(column_selection):
     # Check the available slot for the next piece
     for i in range(Row):
