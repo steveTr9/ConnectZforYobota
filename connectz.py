@@ -107,10 +107,10 @@ def check_win(count, board, last_move_player, last_move_col, last_move_row, Win)
         return win_swne
 
 
-def check_end(count, Column, Row, result):
-    if input_col == -1 and count - 1 < Column * Row and result == []:  # Conditions for the incomplete game
+def check_end(count, column, row, result):
+    if input_col == -1 and count - 1 < column * row and result == []:  # Conditions for the incomplete game
         return 3
-    elif input_col == -1 and count - 1 == Column * Row and result == []:  # Conditions for the draw game
+    elif input_col == -1 and count - 1 == column * row and result == []:  # Conditions for the draw game
         return 0
 
 
