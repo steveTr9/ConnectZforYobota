@@ -10,7 +10,7 @@ Then, please make sure that you have your data file within the directory folder 
 
 Please refer to 'ConnectZ.pdf' for output example for each case.
 
-'connects.py' was written under Python3.7.
+'connectz.py' was written under Python3.7.
 
 2. EXPLAINATION
 
