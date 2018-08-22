@@ -4,7 +4,7 @@ _There are several clarifications that I would like to mention_
 
 1. HOW TO RUN
 
-After downloading the repository, in order to run the file 'connectz.py', at first, you have to install the package listed in the file 'requirements.txt'.
+After downloading the repository, in order to run the file 'connectz.py', you have to install the "sys" package.
 
 Then, please make sure that you have your data file within the directory folder before running the file 'connectz.py' or you have to type the input path where you store the data (for example: "home/data.txt") when the programme asks for it.
 
