@@ -1,17 +1,9 @@
-import numpy as np
 import sys
 
 
-def check_slot(column_selection, board):
-    # Check the available slot for the next piece
-    avail_row = []
-    for i in range(board.shape[0]):
-        if board[board.shape[0] - 1 - i][column_selection] == 0:
-            avail_row = board.shape[0] - 1 - i
-            break
-    if avail_row != []:
-        return avail_row
-    else:
+def check_slot(column_selection, board, row):
+    # Check whether the move exceeds the limit
+    if len(board[column_selection]) > row:
         print('5')
         sys.exit()
 
@@ -30,7 +22,7 @@ def s_int(number):
 
 
 def read_file(path):
-    # Checking file
+    # Checking file location
     try:
         file = open(path)
         return file
@@ -52,13 +44,15 @@ def parse_first_row_input(f):
         sys.exit()
 
 
-def check_win_h(count, board, last_move_player, last_move_col, last_move_row, win):
+def check_win_h(count, board, last_move_player, last_move_col, last_move_row, win, column):
     # Check win horizontally
     if count + 1 >= 2 * win:
         check_target = 1
         for i in [1, -1]:
             cw_col = last_move_col
-            while 0 <= cw_col + i < board.shape[1] and board[last_move_row, cw_col + i] == last_move_player:
+            cw_row = last_move_row
+            while (0 <= cw_col + i < column
+                   and 0 <= cw_row < len(board[cw_col+i]) and board[cw_col + i][cw_row] == last_move_player):
                 check_target += 1
                 cw_col += i
                 if check_target == win:
@@ -67,41 +61,26 @@ def check_win_h(count, board, last_move_player, last_move_col, last_move_row, wi
 
 def check_win_v(count, board, last_move_player, last_move_col, last_move_row, win):
     # Check win vertically
-    if count + 1 >= 2 * win and last_move_row <= board.shape[0] - win:
+    if count + 1 >= 2 * win and last_move_row >= win - 1:
         check_target = 1
         cw_row = last_move_row
-        while cw_row + 1 < board.shape[0] and board[cw_row + 1][last_move_col] == last_move_player:
+        cw_col = last_move_col
+        while 0 <= cw_row - 1 and board[cw_col][cw_row - 1] == last_move_player:
             check_target += 1
-            cw_row += 1
+            cw_row += -1
             if check_target == win:
                 return last_move_player
 
 
-def check_win_nwse(count, board, last_move_player, last_move_col, last_move_row, win):
+def check_win_nwse(count, board, last_move_player, last_move_col, last_move_row, win, column):
     # Check win North West to South East
     if count + 1 >= 2 * win:
         check_target = 1
         for i in [1, -1]:
             cw_row = last_move_row
             cw_col = last_move_col
-            while (0 <= cw_row + i < board.shape[0]
-                   and 0 <= cw_col + i < board.shape[1] and board[cw_row + i][cw_col + i] == last_move_player):
-                check_target += 1
-                cw_row += i
-                cw_col += i
-                if check_target == win:
-                    return last_move_player
-
-
-def check_win_swne(count, board, last_move_player, last_move_col, last_move_row, win):
-    # Check win South West to North East
-    if count + 1 >= 2 * win:
-        check_target = 1
-        for i in [1, -1]:
-            cw_row = last_move_row
-            cw_col = last_move_col
-            while (0 <= cw_row - i < board.shape[0]
-                   and 0 <= cw_col + i < board.shape[1] and board[cw_row - i][cw_col + i] == last_move_player):
+            while (0 <= cw_col + i < column
+                   and 0 <= cw_row - i < len(board[cw_col+i]) and board[cw_col + i][cw_row - i] == last_move_player):
                 check_target += 1
                 cw_row += -i
                 cw_col += i
@@ -109,22 +88,36 @@ def check_win_swne(count, board, last_move_player, last_move_col, last_move_row,
                     return last_move_player
 
 
-def check_win(count, board, last_move_player, last_move_col, last_move_row, win):
-    win_h = check_win_h(count, board, last_move_player, last_move_col, last_move_row, win)
+def check_win_swne(count, board, last_move_player, last_move_col, last_move_row, win, column):
+    # Check win South West to North East
+    if count + 1 >= 2 * win:
+        check_target = 1
+        for i in [1, -1]:
+            cw_row = last_move_row
+            cw_col = last_move_col
+            while (0 <= cw_col + i < column
+                   and 0 <= cw_row + i < len(board[cw_col+i]) and board[cw_col + i][cw_row + i] == last_move_player):
+                check_target += 1
+                cw_row += i
+                cw_col += i
+                if check_target == win:
+                    return last_move_player
+
+
+def check_win(count, board, last_move_player, last_move_col, last_move_row, win, column):
+    # Combine all directional check_win_ functions above
+    win_h = check_win_h(count, board, last_move_player, last_move_col, last_move_row, win, column)
     if win_h:
         return win_h
-    if last_move_row <= board.shape[0] - win:
-        win_v = check_win_v(count, board, last_move_player, last_move_col, last_move_row, win)
-        if win_v:
-            return win_v
-    if 2*win - 2 <= last_move_col + board.shape[0] - (last_move_row + 1) <= board.shape[0] + board.shape[1] - 2*win:
-        win_nwse = check_win_nwse(count, board, last_move_player, last_move_col, last_move_row, win)
-        if win_nwse:
-            return win_nwse
-    if 2*win - 2 <= last_move_col + last_move_row <= board.shape[0] + board.shape[1] - 2*win:
-        win_swne = check_win_swne(count, board, last_move_player, last_move_col, last_move_row, win)
-        if win_swne:
-            return win_swne
+    win_v = check_win_v(count, board, last_move_player, last_move_col, last_move_row, win)
+    if win_v:
+        return win_v
+    win_nwse = check_win_nwse(count, board, last_move_player, last_move_col, last_move_row, win, column)
+    if win_nwse:
+        return win_nwse
+    win_swne = check_win_swne(count, board, last_move_player, last_move_col, last_move_row, win, column)
+    if win_swne:
+        return win_swne
     return 0
 
 
@@ -138,18 +131,21 @@ def check_end(count, column, row):
 
 
 def check_game_eligi(win, row, column):
+    # Check the game's form
     if win > row or win > column:
         print('7')
         sys.exit()
 
 
 def check_input(col, column):
-    if col > column:  # Conditions for the invalid column game
+    # Check the input's eligibility
+    if col > column:  # Condition for the invalid column game
         print('6')
         sys.exit()
 
 
 def swap_last_move_player(last_move_player):
+    # Swap the player
     if last_move_player == 1:
         return 2
     else:
@@ -171,34 +167,37 @@ if __name__ == '__main__':
     column = first_row_input[0]
     row = first_row_input[1]
     win = first_row_input[2]
-
-    # Create a virtual play board
-    board = np.zeros((row, column))
-
-    # Playing procedure
-    check_game_eligi(win, row, column)
-
-    count = 0  # Variable to check the game's completeness
     last_move_player = 1
     last_move_player_win = 0
+    count = 0       # Variable to check the game's completeness
+    board = {}      # Pre-define the play board dictionary
 
-    while last_move_player_win == 0:
+    # Pre-define the "skeleton" for the play board dictionary
+    for i in range(column):
+        board[i] = []
 
-        input_col = s_int(f.readline())  # The player's move
+    # Playing procedure
+    check_game_eligi(win, row, column)  # Check whether the game's form is valid
+
+    while last_move_player_win == 0:    # The game is running until we found the player won or the error
+
+        input_col = s_int(f.readline())  # Read each player's move
         count += 1
 
-        check_end(count, column, row)
-        check_input(input_col, column)
+        check_end(count, column, row)      # Check whether the game is draw or incomplete
+        check_input(input_col, column)     # Check input's eligibility
 
-        last_move_col = input_col - 1  # -1 to be in range 0...(Column-1)
-        last_move_row = check_slot(last_move_col, board)
-        # Condition for the valid move, , checking the row's availability
+        last_move_col = input_col - 1      # -1 to be in range 0...(Column-1)
+        last_move_row = len(board[last_move_col])
 
-        board[last_move_row][last_move_col] = last_move_player
-        last_move_player_win = check_win(count, board, last_move_player, last_move_col, last_move_row, win)
-        # last_move_player_win will return either 1, 2 or None
+        board[last_move_col].append(last_move_player) # Add the player's number to the dictionary
+        check_slot(last_move_col, board, row)         # Check whether the newly added number is valid
 
-        if last_move_player_win:  # Winning condition
+        last_move_player_win = check_win(count, board, last_move_player,
+                                         last_move_col, last_move_row, win, column)
+        # last_move_player_win will return either 1, 2 or 0
+
+        if last_move_player_win:  # If one player has won
             if f.readline() != '':  # If players are still playing
                 print('4')
                 break
